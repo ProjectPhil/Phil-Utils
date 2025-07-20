@@ -1,127 +1,65 @@
-# Hyperz Utilities
-A simple utilities package that offers many different functions that could be of use to you when writing ExpressJS websites or Discord bots!
+# Phil Utils
 
----
+A handy Node.js utility package for bots, websites, and general scripting. Includes logging, randomization, ASCII art, time utilities, and more.
 
-# Functions / Exports
-- [figlify](#figlify)
-- [mdConvert](#mdConvert)
-- [generateRandom](#generateRandom)
-- [sanitize](#sanitize)
-- [saveFile](#saveFile)
-- [getDate](#fetchTime)
-- [fetchTime](#fetchTime)
-- [getRandomArray](#getRandomArray)
-- [checkIfHex](#checkIfHex)
-- [dirSize](#dirSize)
-- [getDiscountedValue](#getDiscountedValue)
-- [randomColor](#randomColor)
+## Installation
 
----
-
-# figlify
-Used to turn text into art!
-```js
-    const utils = require('hyperz-utils');
-    await utils.figlify("Hello World!", { randFont: true, font: undefined });
+```
+npm install phil-utils
 ```
 
-# mdConvert
-Converts raw text/md to HTML compatible.
-```js
-    const utils = require('hyperz-utils');
-    let text = "# Hello world!";
-    let webPageContent = await utils.mdConvert(text);
-    res.render('index.ejs', { content: webPageContent }); // ExpressJS Framework Example
+Or, if using locally:
+```
+npm install ./putils
 ```
 
-# generateRandom
-Generate a random string of acceptable characters.
+## Features
+- Colorful logging with titles and styles
+- Random ID and date utilities
+- Timezone-aware time formatting
+- Random array element selection
+- Hex color checking and fixing
+- ASCII art (figlet) with random font support
+
+## Usage
+
 ```js
-    const utils = require('hyperz-utils');
-    let random = await utils.generateRandom(12) // How long the string should be
-    console.log(random);
+const utils = require('phil-utils'); // or require('./putils') if local
+
+// Logger
+utils.Logger('Hello, world!', { color: 'green', bold: true, title: 'INFO' });
+
+// MakeID
+const id = utils.MakeID(10); // e.g., 'aB3dE9xQw2'
+
+// GetDate
+const today = utils.GetDate(); // e.g., 'Mon May 13 2024'
+
+// FetchTime
+const nowInNY = utils.FetchTime('America/New_York', 'YYYY-MM-DD HH:mm:ss');
+
+// GetRandomArray
+const randomItem = utils.GetRandomArray(['apple', 'banana', 'cherry']);
+
+// CheckIfHex
+const check = utils.CheckIfHex('ff00ff'); // { pass: false, item: '#ff00ff' }
+const check2 = utils.CheckIfHex('#ff00ff'); // { pass: true }
+
+// Figlify
+utils.Figlify('Hello!', { randFont: true }).then(console.log);
+utils.Figlify('Hello!', { font: 'Ghost', width: 100 }).then(console.log);
 ```
 
-# sanitize
-Make a string of text MySQL compatible to avoid injections.
-```js
-    const utils = require('hyperz-utils');
-    let text = "oh hello world`; DROP DATABASE main;";
-    let cleansed = await utils.sanitize(text, false) // boolean for <script> replacement in HTML
-    await con.query(cleansed, function(err, row) {
-        if(err) throw err;
-    });
-```
+## Logger Options
+- `color`: Any chalk color (e.g., 'red', 'green', 'blue', 'yellow', etc.)
+- `bg`: Any chalk background color (e.g., 'bgRed', 'bgGreen', etc.)
+- `bold`: Boolean for bold text
+- `title`: String to prefix the log
 
-# saveFile
-Download and save a file from a URL. (NodeJS File Downloader)
-```js
-    const utils = require('hyperz-utils');
-    utils.saveFile("https://hyperz.net/assets/logo.png", "hyperzlogo", "png", "./public/images", false); // boolean is to clone files or not
-```
+## Figlify Options
+- `font`: Specify a figlet font (see all with `figlet.fontsSync()`)
+- `randFont`: Boolean, use a random font
+- `width`: Output width (default 700)
 
-# getDate
-Get the date and convert to string with NodeJS.
-```js
-    const utils = require('hyperz-utils');
-    let date = await utils.getDate();
-    console.log(date);
-```
-
-# fetchTime
-Fetch the current time from a certain time zone.
-```js
-    const utils = require('hyperz-utils');
-    let time = await utils.fetchTime("America/New_York", "MM-DD-YYYY"); // https://github.com/Itz-Hyperz/big-ben-bot/blob/main/timezones.json look at values
-    console.log(date);
-```
-
-# getRandomArray
-Get a random element from an array of strings.
-```js
-    const utils = require('hyperz-utils');
-    let array = ["a", "b", "c", "d", "e", "f"];
-    let random = await utils.getRandomArray(array);
-    console.log(`you got: ${random}!`);
-```
-
-# checkIfHex
-Check if the provided string is a valid color hex.
-```js
-    const utils = require('hyperz-utils');
-    let hex = "#FFFFFF";
-    let check = await utils.checkIfHex(hex);
-    if(!check.pass) hex = check.item; // Set to the proper hex value if it's not
-    console.log(hex);
-```
-
-# dirSize
-View the directory size of a folder.
-```js
-    const utils = require('hyperz-utils');
-    let size = await utils.dirSize("./src/images");
-    console.log(size);
-```
-
-# getDiscountedValue
-Get the discounted amount of a total value.
-```js
-const utils = require('hyperz-utils');
-let totalValue = 34.99; // Price
-let discount = 30; // 30%
-let newValue = await utils.getDiscountedValue(totalValue, discount);
-console.log(newValue) // 10.497 (30% of 34.99)
-```
-
-# randomColor
-Get a random color logged to the console.
-```js
-const utils = require('hyperz-utils');
-utils.randomColor("Wow a random color!!!");
-```
-
----
-
-# Credits
-[@Hyperz](https://hyperz.net) - *Creating the package.*
+## License
+MIT
